@@ -1,0 +1,499 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		5874CA1AC9529799CA33D40F /* Pods_Bottle_Messenger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B97CBC374D396BA645645E0B /* Pods_Bottle_Messenger.framework */; };
+		730989531F608CD2004B59B3 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 730989541F608CD2004B59B3 /* SDWebImage.framework */; };
+		73135ED51F5F388F00E16B5E /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73135ED41F5F388F00E16B5E /* ChatViewController.swift */; };
+		73135EDC1F5F40F800E16B5E /* ChatViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73135EDA1F5F40F800E16B5E /* ChatViewCell.swift */; };
+		73135EDD1F5F40F800E16B5E /* ChatViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73135EDB1F5F40F800E16B5E /* ChatViewCell.xib */; };
+		73135EE01F5F44BB00E16B5E /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73135EDF1F5F44BB00E16B5E /* Message.swift */; };
+		73135EE21F5F463F00E16B5E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 73135EE11F5F463800E16B5E /* GoogleService-Info.plist */; };
+		73135EE41F5F4D4300E16B5E /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 731A8D411F5F171B00930C93 /* Info.plist */; };
+		73135EE61F5F5E7A00E16B5E /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73135EE51F5F5E7A00E16B5E /* Utils.swift */; };
+		73135EE81F60471600E16B5E /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73135EE71F60471600E16B5E /* Comment.swift */; };
+		73135EEA1F60807900E16B5E /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73135EE91F60807900E16B5E /* User.swift */; };
+		731A8D361F5F171B00930C93 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731A8D351F5F171B00930C93 /* AppDelegate.swift */; };
+		731A8D381F5F171B00930C93 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731A8D371F5F171B00930C93 /* LoginViewController.swift */; };
+		731A8D3B1F5F171B00930C93 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 731A8D391F5F171B00930C93 /* Main.storyboard */; };
+		731A8D3D1F5F171B00930C93 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 731A8D3C1F5F171B00930C93 /* Assets.xcassets */; };
+		731A8D401F5F171B00930C93 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 731A8D3E1F5F171B00930C93 /* LaunchScreen.storyboard */; };
+		731A8D4A1F5F370800930C93 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731A8D491F5F370800930C93 /* RegistrationViewController.swift */; };
+		7396646B1F675980001AFB54 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7396646A1F675980001AFB54 /* DatabaseManager.swift */; };
+		73D3C7891F646C7E00B9801B /* ImageUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D3C7881F646C7E00B9801B /* ImageUploader.swift */; };
+		73D3C78B1F64A73F00B9801B /* LightboxViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D3C78A1F64A73F00B9801B /* LightboxViewer.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		730989541F608CD2004B59B3 /* SDWebImage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SDWebImage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		73135ED41F5F388F00E16B5E /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ChatViewController.swift; path = "Bottle Messenger/Controller/ChatViewController.swift"; sourceTree = SOURCE_ROOT; };
+		73135EDA1F5F40F800E16B5E /* ChatViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewCell.swift; sourceTree = "<group>"; };
+		73135EDB1F5F40F800E16B5E /* ChatViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatViewCell.xib; sourceTree = "<group>"; };
+		73135EDF1F5F44BB00E16B5E /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		73135EE11F5F463800E16B5E /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		73135EE51F5F5E7A00E16B5E /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		73135EE71F60471600E16B5E /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
+		73135EE91F60807900E16B5E /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		731A8D321F5F171B00930C93 /* Bottle Messenger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Bottle Messenger.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		731A8D351F5F171B00930C93 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		731A8D371F5F171B00930C93 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		731A8D3A1F5F171B00930C93 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		731A8D3C1F5F171B00930C93 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		731A8D3F1F5F171B00930C93 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		731A8D411F5F171B00930C93 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		731A8D491F5F370800930C93 /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
+		7396646A1F675980001AFB54 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
+		73D3C7881F646C7E00B9801B /* ImageUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUploader.swift; sourceTree = "<group>"; };
+		73D3C78A1F64A73F00B9801B /* LightboxViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightboxViewer.swift; sourceTree = "<group>"; };
+		73DFE7481F622273003588D0 /* Bottle Messenger.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Bottle Messenger.entitlements"; sourceTree = "<group>"; };
+		B97CBC374D396BA645645E0B /* Pods_Bottle_Messenger.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Bottle_Messenger.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C01D7F9954F9B329142D4856 /* Pods-Bottle Messenger.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bottle Messenger.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Bottle Messenger/Pods-Bottle Messenger.debug.xcconfig"; sourceTree = "<group>"; };
+		FF0DC1E8AAE44A3DF2B2E0B7 /* Pods-Bottle Messenger.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bottle Messenger.release.xcconfig"; path = "Pods/Target Support Files/Pods-Bottle Messenger/Pods-Bottle Messenger.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		731A8D2F1F5F171B00930C93 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				730989531F608CD2004B59B3 /* SDWebImage.framework in Frameworks */,
+				5874CA1AC9529799CA33D40F /* Pods_Bottle_Messenger.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		02C38058FD511534D360EA89 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C01D7F9954F9B329142D4856 /* Pods-Bottle Messenger.debug.xcconfig */,
+				FF0DC1E8AAE44A3DF2B2E0B7 /* Pods-Bottle Messenger.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		73135EDE1F5F44A500E16B5E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				73135EDF1F5F44BB00E16B5E /* Message.swift */,
+				73135EE71F60471600E16B5E /* Comment.swift */,
+				73135EE91F60807900E16B5E /* User.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		73135EE31F5F473300E16B5E /* Supporting files */ = {
+			isa = PBXGroup;
+			children = (
+				731A8D411F5F171B00930C93 /* Info.plist */,
+				73135EE51F5F5E7A00E16B5E /* Utils.swift */,
+				73135EE11F5F463800E16B5E /* GoogleService-Info.plist */,
+			);
+			path = "Supporting files";
+			sourceTree = "<group>";
+		};
+		731A8D291F5F171B00930C93 = {
+			isa = PBXGroup;
+			children = (
+				731A8D341F5F171B00930C93 /* Bottle Messenger */,
+				731A8D331F5F171B00930C93 /* Products */,
+				02C38058FD511534D360EA89 /* Pods */,
+				A877CB8BEE3B697B7B02564D /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		731A8D331F5F171B00930C93 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				731A8D321F5F171B00930C93 /* Bottle Messenger.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		731A8D341F5F171B00930C93 /* Bottle Messenger */ = {
+			isa = PBXGroup;
+			children = (
+				73DFE7481F622273003588D0 /* Bottle Messenger.entitlements */,
+				73135EDE1F5F44A500E16B5E /* Models */,
+				731A8D4B1F5F377E00930C93 /* Controller */,
+				731A8D4C1F5F379300930C93 /* View */,
+				731A8D3C1F5F171B00930C93 /* Assets.xcassets */,
+				73135EE31F5F473300E16B5E /* Supporting files */,
+			);
+			path = "Bottle Messenger";
+			sourceTree = "<group>";
+		};
+		731A8D4B1F5F377E00930C93 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				731A8D371F5F171B00930C93 /* LoginViewController.swift */,
+				731A8D351F5F171B00930C93 /* AppDelegate.swift */,
+				73135ED41F5F388F00E16B5E /* ChatViewController.swift */,
+				731A8D491F5F370800930C93 /* RegistrationViewController.swift */,
+				73135EDA1F5F40F800E16B5E /* ChatViewCell.swift */,
+				73D3C7881F646C7E00B9801B /* ImageUploader.swift */,
+				73D3C78A1F64A73F00B9801B /* LightboxViewer.swift */,
+				7396646A1F675980001AFB54 /* DatabaseManager.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		731A8D4C1F5F379300930C93 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				731A8D391F5F171B00930C93 /* Main.storyboard */,
+				73135EDB1F5F40F800E16B5E /* ChatViewCell.xib */,
+				731A8D3E1F5F171B00930C93 /* LaunchScreen.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		A877CB8BEE3B697B7B02564D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				730989541F608CD2004B59B3 /* SDWebImage.framework */,
+				B97CBC374D396BA645645E0B /* Pods_Bottle_Messenger.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		731A8D311F5F171B00930C93 /* Bottle Messenger */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 731A8D441F5F171B00930C93 /* Build configuration list for PBXNativeTarget "Bottle Messenger" */;
+			buildPhases = (
+				A91E113C965F9911555D4694 /* [CP] Check Pods Manifest.lock */,
+				731A8D2E1F5F171B00930C93 /* Sources */,
+				731A8D2F1F5F171B00930C93 /* Frameworks */,
+				731A8D301F5F171B00930C93 /* Resources */,
+				1D717285C7ABC02335B59D8D /* [CP] Embed Pods Frameworks */,
+				653E2F13E7994752FE74D5F7 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Bottle Messenger";
+			productName = FamilyMessenger;
+			productReference = 731A8D321F5F171B00930C93 /* Bottle Messenger.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		731A8D2A1F5F171B00930C93 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0900;
+				LastUpgradeCheck = 0900;
+				ORGANIZATIONNAME = "Bam Bam Labs";
+				TargetAttributes = {
+					731A8D311F5F171B00930C93 = {
+						CreatedOnToolsVersion = 9.0;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
+					};
+				};
+			};
+			buildConfigurationList = 731A8D2D1F5F171B00930C93 /* Build configuration list for PBXProject "Bottle Messenger" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 731A8D291F5F171B00930C93;
+			productRefGroup = 731A8D331F5F171B00930C93 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				731A8D311F5F171B00930C93 /* Bottle Messenger */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		731A8D301F5F171B00930C93 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				73135EDD1F5F40F800E16B5E /* ChatViewCell.xib in Resources */,
+				731A8D401F5F171B00930C93 /* LaunchScreen.storyboard in Resources */,
+				73135EE41F5F4D4300E16B5E /* Info.plist in Resources */,
+				73135EE21F5F463F00E16B5E /* GoogleService-Info.plist in Resources */,
+				731A8D3D1F5F171B00930C93 /* Assets.xcassets in Resources */,
+				731A8D3B1F5F171B00930C93 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		1D717285C7ABC02335B59D8D /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Bottle Messenger/Pods-Bottle Messenger-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		653E2F13E7994752FE74D5F7 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Bottle Messenger/Pods-Bottle Messenger-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A91E113C965F9911555D4694 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		731A8D2E1F5F171B00930C93 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				731A8D4A1F5F370800930C93 /* RegistrationViewController.swift in Sources */,
+				73D3C78B1F64A73F00B9801B /* LightboxViewer.swift in Sources */,
+				73135EDC1F5F40F800E16B5E /* ChatViewCell.swift in Sources */,
+				731A8D381F5F171B00930C93 /* LoginViewController.swift in Sources */,
+				73135EE81F60471600E16B5E /* Comment.swift in Sources */,
+				73135EE61F5F5E7A00E16B5E /* Utils.swift in Sources */,
+				73135EEA1F60807900E16B5E /* User.swift in Sources */,
+				73135EE01F5F44BB00E16B5E /* Message.swift in Sources */,
+				7396646B1F675980001AFB54 /* DatabaseManager.swift in Sources */,
+				73D3C7891F646C7E00B9801B /* ImageUploader.swift in Sources */,
+				73135ED51F5F388F00E16B5E /* ChatViewController.swift in Sources */,
+				731A8D361F5F171B00930C93 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		731A8D391F5F171B00930C93 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				731A8D3A1F5F171B00930C93 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		731A8D3E1F5F171B00930C93 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				731A8D3F1F5F171B00930C93 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		731A8D421F5F171B00930C93 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		731A8D431F5F171B00930C93 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		731A8D451F5F171B00930C93 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C01D7F9954F9B329142D4856 /* Pods-Bottle Messenger.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Bottle Messenger/Bottle Messenger.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Y8ZT75JSB8;
+				INFOPLIST_FILE = "Bottle Messenger/Supporting files/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.bambamlabs.BottleApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		731A8D461F5F171B00930C93 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FF0DC1E8AAE44A3DF2B2E0B7 /* Pods-Bottle Messenger.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Bottle Messenger/Bottle Messenger.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Y8ZT75JSB8;
+				INFOPLIST_FILE = "Bottle Messenger/Supporting files/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.bambamlabs.BottleApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		731A8D2D1F5F171B00930C93 /* Build configuration list for PBXProject "Bottle Messenger" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				731A8D421F5F171B00930C93 /* Debug */,
+				731A8D431F5F171B00930C93 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		731A8D441F5F171B00930C93 /* Build configuration list for PBXNativeTarget "Bottle Messenger" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				731A8D451F5F171B00930C93 /* Debug */,
+				731A8D461F5F171B00930C93 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 731A8D2A1F5F171B00930C93 /* Project object */;
+}
