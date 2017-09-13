@@ -29,7 +29,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     var postImageURL: String = ""
     var postThumbURL: String = ""
     let databaseManager = DatabaseManager()
-    let lightBoxViewer = LightboxViewer()
+    var lightBoxViewer = LightboxViewer()
     var imageUploader: ImageUploader = ImageUploader()
     
     
@@ -38,7 +38,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         super.viewDidLoad()
         
         // Setting up all delegates and satassources
-        lightBoxViewer.delegate = self
         databaseManager.delegate = self
         imageUploader.delegate = self
         chatTableView.delegate = self
@@ -59,6 +58,11 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         databaseManager.getInitialData()
         configureTableView()
         
+
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+
     }
     
     // All delegate call-back functions
@@ -84,6 +88,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         if let user = user {
             userArray.append(user)
             print ("Added data recieved: 1 new user added")
+            databaseManager.saveMessageToDatabase(userID: user.id, text: "***WE HAVE A NEW USER***\n Please Welcome \(user.email) to the Bottle App!", postImageURL: nil, postThumbURL: nil)
             reloadUI()
         }
         if let message = message {
@@ -194,7 +199,9 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             }
             cell.commentTask = cellProperties.commentTask
             cell.likeTask = cellProperties.likeTask
-            cell.photoTask = cellProperties.photoTask
+            cell.photoTask = {
+                self.lightBoxViewer.showImage(viewController: self, url: message.photoURL, backload: cell.messagePhotoView.image)
+            }
             return cell
         default:
             let cell = chatTableView.dequeueReusableCell(withIdentifier: "leftChatCell") as! LeftChatViewCell
@@ -215,7 +222,9 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             }
             cell.commentTask = cellProperties.commentTask
             cell.likeTask = cellProperties.likeTask
-            cell.photoTask = cellProperties.photoTask
+            cell.photoTask = {
+                self.lightBoxViewer.showImage(viewController: self, url: message.photoURL, backload: cell.messagePhotoView.image)
+            }
             return cell
         }
     }
@@ -278,9 +287,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             
             // Set a function that deals with photo zoom, we know photo is there for sure otherwise user couldnt tap on it ;)
             
-            cellProperties.photoTask = {
-                self.lightBoxViewer.showImage(viewController: self, url: message.photoURL)
-            }
             
             // TODO: Show number of comments
             if let comments = message.comments {

@@ -166,7 +166,7 @@
                     <connections>
                         <outlet property="nicknameField" destination="AT9-fX-bqL" id="SXv-j9-Ste"/>
                         <outlet property="passwordField" destination="9ZJ-E4-xbb" id="0Hf-Jc-hdb"/>
-                        <segue destination="2mP-rS-lY3" kind="show" identifier="goToChat" id="dLC-NE-lZ0"/>
+                        <segue destination="gd3-EF-L4W" kind="show" identifier="goToChat" id="dLC-NE-lZ0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gb7-ws-9bv" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -280,7 +280,7 @@
                         <outlet property="nicknameField" destination="FMg-Iz-46D" id="FSs-Gm-59f"/>
                         <outlet property="passwordField" destination="7Y4-bL-XG4" id="xIW-rG-grS"/>
                         <outlet property="profilePhotoView" destination="59d-Ed-nB1" id="WdU-lx-TG7"/>
-                        <segue destination="2mP-rS-lY3" kind="show" identifier="goToChat" id="YXW-2b-ave"/>
+                        <segue destination="gd3-EF-L4W" kind="show" identifier="goToChat" id="YXW-2b-ave"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eaH-Td-8jJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -409,6 +409,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="twH-yg-tof"/>
                     </view>
+                    <navigationItem key="navigationItem" id="FvM-yg-qPO"/>
                     <connections>
                         <outlet property="chatTableView" destination="96W-Ih-g9P" id="koJ-xA-fgF"/>
                         <outlet property="chatTextField" destination="QcS-lp-78d" id="A7K-PQ-pgf"/>
@@ -425,7 +426,25 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2312.8000000000002" y="137.18140929535232"/>
+            <point key="canvasLocation" x="2652" y="137.18140929535232"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="eGi-rZ-he6">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="gd3-EF-L4W" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="EkX-Jt-w48">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="2mP-rS-lY3" kind="relationship" relationship="rootViewController" id="U5g-gJ-ic5"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="beb-C1-zTe" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1886" y="137"/>
         </scene>
     </scenes>
     <resources>

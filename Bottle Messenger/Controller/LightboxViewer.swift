@@ -31,11 +31,12 @@ class LightboxViewer: UIViewController {
  func showImage(viewController: UIViewController, url: String?, backload: UIImage? = nil) {
         if let getUrl = url {
             if let photoURL = URL(string: getUrl) {
-                var source: [Any] = [photoURL]
                 if let backload = backload {
-                    source = [BFRBackLoadedImageSource(initialImage: backload, hiResURL: photoURL) as Any]
+                    var source = [BFRBackLoadedImageSource(initialImage: backload, hiResURL: photoURL) as Any]
+                } else {
+                    var source = [photoURL]
                 }
-                if let imageVC = BFRImageViewController(imageSource: [source]) {
+                if let imageVC = BFRImageViewController(imageSource: [photoURL]) {
                     viewController.present(imageVC, animated: true, completion: nil)
                 }
             }
@@ -60,7 +61,7 @@ class LightboxViewer: UIViewController {
             }
             
             if let imageVC = BFRImageViewController(imageSource: [source]) {
-                viewController.present(imageVC, animated: true, completion: nil)
+                imageVC.present(imageVC, animated: true, completion: nil)
             }
         }
     }
