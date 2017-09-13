@@ -10,32 +10,39 @@ import Foundation
 import UIKit
 import BFRImageViewer
 
-class LightboxViewer {
+protocol LightboxViewerDelegate {
+
+}
+
+class LightboxViewer: UIViewController {
+    
+    var delegate: LightboxViewerDelegate?
     
     private static func rootViewController() -> UIViewController {
         
         return UIApplication.shared.keyWindow!.rootViewController!
     }
     
-    static func showImage(viewController: UIViewController, url: String?, backload: UIImage? = nil) {
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    
+ func showImage(viewController: UIViewController, url: String?, backload: UIImage? = nil) {
         if let getUrl = url {
-            print (getUrl)
             if let photoURL = URL(string: getUrl) {
-                print ("URL-istamine onnestus")
-                var source: [Any] = []
+                var source: [Any] = [photoURL]
                 if let backload = backload {
-                    print ("Backload pilt on kaes")
                     source = [BFRBackLoadedImageSource(initialImage: backload, hiResURL: photoURL) as Any]
                 }
                 if let imageVC = BFRImageViewController(imageSource: [source]) {
-                    print ("VC saime tehtud", viewController.nibName as Any)
                     viewController.present(imageVC, animated: true, completion: nil)
                 }
             }
         }
     }
     
-    static func showGallery(viewController: UIViewController, urlArray: [String]?, backload: [UIImage]? = nil) {
+ func showGallery(viewController: UIViewController, urlArray: [String]?, backload: [UIImage]? = nil) {
         if let urlArray = urlArray {
             var source: [Any] = []
             var sourceItem: Any = ""

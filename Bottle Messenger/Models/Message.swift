@@ -8,7 +8,11 @@
 
 import UIKit
 
-class Message {
+class Message: Equatable {
+    static func ==(lhs: Message, rhs: Message) -> Bool {
+        return lhs === rhs
+    }
+    
     var id : String = ""
     var sender: String = ""
     var reciever: [String]? = nil

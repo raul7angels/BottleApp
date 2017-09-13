@@ -8,12 +8,11 @@
 
 import UIKit
 
-class ChatViewCell: UITableViewCell {
-
+class LeftChatViewCell: UITableViewCell {
+    
     var likeTask : (() -> Void)? = nil
     var commentTask : (() -> Void)? = nil
     var photoTask : (() -> Void)? = nil
-
     
     @IBOutlet weak var messageBoxView: UIView!
     @IBOutlet weak var messageTextLabel: UILabel!
@@ -49,7 +48,7 @@ class ChatViewCell: UITableViewCell {
     }
     
     @IBAction func likeTapped(_ sender: Any) {
-        print("Like tapped")
+        print("Like tapped \(String(describing: self.likeTask))")
         if let btnAction = self.likeTask
         {
             btnAction()

@@ -11,6 +11,7 @@ import UIKit
 import FirebaseDatabase
 import FirebaseStorage
 import SVProgressHUD
+import SDWebImage
 
 extension UIImage {
     func resizeImage(newWidth: CGFloat) -> UIImage {
@@ -40,13 +41,14 @@ class ImageUploader: UIViewController, UIImagePickerControllerDelegate, UINaviga
     var delegate: ImageUploaderDelegate?
     var imagePicker: UIImagePickerController?
     var parentVC = UIViewController()
+    var imageManager = SDWebImageManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
     }
     
-    public func pickImage(viewController: UIViewController, folder: String, tn_width: Int, width: Int) {
+    func pickImage(viewController: UIViewController, folder: String, tn_width: Int, width: Int) {
         print ("pickImage got called ")
         imagePicker = UIImagePickerController()
         
@@ -99,10 +101,15 @@ class ImageUploader: UIViewController, UIImagePickerControllerDelegate, UINaviga
                     } else {
                         if let imgURLString = metadata?.downloadURL()?.absoluteString {
                             self.imageURL = imgURLString
+                            self.imageManager.saveImage(toCache: image, for: URL(string:imgURLString))
                             workingFolder.child("thumbnails/tn_\(NSUUID().uuidString).jpeg").putData(thumbData, metadata: nil, completion: { (metadata, error) in
+                                if let error = error {
+                                    SVProgressHUD.dismiss()
+                                    Utils.displayAlert(targetVC: self, message: error.localizedDescription)
+                                }
                                 if let imgURLString = metadata?.downloadURL()?.absoluteString {
                                     self.thumbnailURL = imgURLString
-                                    
+                                    self.imageManager.saveImage(toCache: thumbnail, for: URL(string:imgURLString))
                                     // Once finished call delegate function with UIImages + image URL-s
                                     self.delegate?.photoURLReturned(photo: image, thumbnail: thumbnail, url: self.imageURL, url_tn: self.thumbnailURL)
                                     SVProgressHUD.dismiss()

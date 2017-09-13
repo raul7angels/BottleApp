@@ -13,12 +13,13 @@ import ChameleonFramework
 import BFRImageViewer
 import SVProgressHUD
 
-class ChatViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, ImageUploaderDelegate, DatabaseManagerDelegate {
+class ChatViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, ImageUploaderDelegate, DatabaseManagerDelegate, LightboxViewerDelegate {
     
     @IBOutlet weak var textfieldHeight: NSLayoutConstraint!
     @IBOutlet weak var chatTextField: UITextField!
     @IBOutlet weak var chatTableView: UITableView!
     @IBOutlet weak var sendButton: UIButton!
+    @IBOutlet weak var uploadedImageView: UIImageView!
     
     var keyboardHeight : CGFloat = 0
     var originalInputHeight : CGFloat = 0
@@ -28,14 +29,16 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     var postImageURL: String = ""
     var postThumbURL: String = ""
     let databaseManager = DatabaseManager()
+    let lightBoxViewer = LightboxViewer()
     var imageUploader: ImageUploader = ImageUploader()
-
     
-
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Setting up all delegates and satassources
+        lightBoxViewer.delegate = self
         databaseManager.delegate = self
         imageUploader.delegate = self
         chatTableView.delegate = self
@@ -49,36 +52,81 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             Utils.displayAlert(targetVC: self, title: "Error", message: "Please log in to use the bottle chat.", button: "Log in", segue: "goToLogin")
         }
         
-        chatTableView.register(UINib(nibName: "ChatViewCell", bundle: nil), forCellReuseIdentifier: "chatCell")
+        chatTableView.register(UINib(nibName: "LeftChatViewCell", bundle: nil), forCellReuseIdentifier: "leftChatCell")
+        chatTableView.register(UINib(nibName: "RightChatViewCell", bundle: nil), forCellReuseIdentifier: "rightChatCell")
         
         SVProgressHUD.show()
-        databaseManager.setUpFirebaseConnections()
+        databaseManager.getInitialData()
         configureTableView()
-
+        
     }
     
     // All delegate call-back functions
     
     func initialDataRecieved(users: [User]? = nil, messages: [Message]? = nil) {
         SVProgressHUD.dismiss()
-
+        
         if let messages = messages {
-            print ("Got \(messages.count) messages")
+            print ("Initial data recieved: Got \(messages.count) messages")
             messageArray = messages
         }
         if let users = users {
-        print ("Got \(users.count) users")
-        userArray = users
+            print ("Initial data recieved: Got \(users.count) users")
+            userArray = users
         }
         reloadUI()
-
+        scrollTableToEnd()
+        databaseManager.monitorForUpdates()
         
     }
     
-    func messageUpdatesRecieved(messages: [Message]? = nil) {
-        if let messages = messages {
-            messageArray = messages
+    func addedDataRecieved(user: User?, message: Message?) {
+        if let user = user {
+            userArray.append(user)
+            print ("Added data recieved: 1 new user added")
             reloadUI()
+        }
+        if let message = message {
+            messageArray.append(message)
+            print ("Added data recieved: 1 new message \(message.text)")
+            reloadUI()
+            scrollTableToEnd()
+        }
+        
+    }
+    
+    func updatedDataRecieved(user: User?, message: Message?) {
+        if let user = user {
+            if let updatedUser = self.userArray.filter({ $0.id == user.id }).first {
+                if let index = userArray.index(of: updatedUser) {
+                    userArray[index] = user
+                }
+            }
+            reloadUI()
+        }
+        if let message = message {
+            if let updatedMessage = self.messageArray.filter({ $0.id == message.id }).first {
+                if let index = messageArray.index(of: updatedMessage) {
+                    messageArray[index] = message
+                    print ("Message \(message.text) was updated")
+                }
+            }
+            reloadUI()
+        }
+    }
+    
+    func removedDataRecieved(message: Message?) {
+        if let message = message {
+            
+            if let deletedMessage = self.messageArray.filter({ $0.id == message.id }).first {
+                if let index = messageArray.index(of: deletedMessage) {
+                    messageArray.remove(at: index)
+                    reloadUI()
+                    print("Message removed:", message.text)
+                } else {
+                    print ("Can't find the message to delete")
+                }
+            }
         }
     }
     
@@ -91,117 +139,170 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     func photoURLReturned(photo: UIImage, thumbnail: UIImage, url: String, url_tn: String) {
         postImageURL = url
         postThumbURL = url_tn
+        uploadedImageView.isHidden = false
+        uploadedImageView.image = photo
     }
     
     // MARK: - Table view delegate functions
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-
+        
         return messageArray.count
     }
     
     
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        let selectedMessage = messageArray[indexPath.row]
+        if selectedMessage.sender == userID {
+            if editingStyle == .delete {
+                print("Delete")
+                databaseManager.removeMessage(message: selectedMessage)
+            }
+        }
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = chatTableView.dequeueReusableCell(withIdentifier: "chatCell") as! ChatViewCell
-        
+        // Get the info about the message from an array
         let message = messageArray[indexPath.row]
-        cell.messageTextLabel.text = message.text
+        let cellProperties = prepareCell(message: message, index: indexPath.row)
         
-        let date = message.timestamp.toDate(dateFormat: "yyyy-MM-dd HH:mm:ss ZZZ")
+        // Pick cell style based on who the sender is
+        var isUsersPost = false
+        if message.sender == userID {
+            isUsersPost = true
+        }
+        
+        switch isUsersPost {
+        case true:
+            let cell = chatTableView.dequeueReusableCell(withIdentifier: "rightChatCell") as! RightChatViewCell
+            cell.messageBoxView.backgroundColor = UIColor.flatSkyBlue()
+            cell.nicknameLabel.text = cellProperties.senderEmail
+            cell.messageDateLabel.text = cellProperties.date
+            cell.messageTextLabel.text = cellProperties.text
+            if let profilePhoto = cellProperties.profilePhoto {cell.profilePhotoView.sd_setImage(with: profilePhoto)}
+            cell.messageLikesLabel.text = cellProperties.likes
+            cell.likeButton.setTitle(cellProperties.likeButton, for: .normal)
+            cell.messageCommentLabel.text = cellProperties.commentCount
+            if cellProperties.hasPhoto {
+                cell.messagePhotoView.isHidden = false
+                cell.messagePhotoView.sd_setImage(with: cellProperties.thumbURL)
+            } else {
+                cell.messagePhotoView.isHidden = true
+                cell.messagePhotoView.image = nil
+            }
+            cell.commentTask = cellProperties.commentTask
+            cell.likeTask = cellProperties.likeTask
+            cell.photoTask = cellProperties.photoTask
+            return cell
+        default:
+            let cell = chatTableView.dequeueReusableCell(withIdentifier: "leftChatCell") as! LeftChatViewCell
+            cell.messageBoxView.backgroundColor = UIColor.flatGrayColorDark()
+            cell.nicknameLabel.text = cellProperties.senderEmail
+            cell.messageDateLabel.text = cellProperties.date
+            cell.messageTextLabel.text = cellProperties.text
+            if let profilePhoto = cellProperties.profilePhoto {cell.profilePhotoView.sd_setImage(with: profilePhoto)}
+            cell.messageLikesLabel.text = cellProperties.likes
+            cell.likeButton.setTitle(cellProperties.likeButton, for: .normal)
+            cell.messageCommentLabel.text = cellProperties.commentCount
+            if cellProperties.hasPhoto {
+                cell.messagePhotoView.isHidden = false
+                cell.messagePhotoView.sd_setImage(with: cellProperties.thumbURL)
+            } else {
+                cell.messagePhotoView.isHidden = true
+                cell.messagePhotoView.image = nil
+            }
+            cell.commentTask = cellProperties.commentTask
+            cell.likeTask = cellProperties.likeTask
+            cell.photoTask = cellProperties.photoTask
+            return cell
+        }
+    }
+    
+    func prepareCell(message: Message, index: Int) -> CellProperties {
+        var cellProperties = CellProperties()
+        
+        cellProperties.text = message.text
+        
+        // Make database dates look nice
         let dateformatter = DateFormatter()
         dateformatter.dateFormat = "HH:mm:ss dd.MM.yyyy"
-        let dateString = dateformatter.string(from: date)
+        cellProperties.date = dateformatter.string(from: message.timestamp.toDate(dateFormat: "yyyy-MM-dd HH:mm:ss ZZZ"))
         
-        // Get user and add e-mail, photos, likes and comments
+        // Get user based on id and add e-mail & profile photo
         if let sender = userArray.filter({ $0.id == message.sender }).first {
-            cell.nicknameLabel.text = sender.email
-            cell.messageDateLabel.text = String(dateString)
+            cellProperties.senderEmail = sender.email
             
             // Setting user profile photo
             if let photoURLString = sender.photoURL {
                 if let photoURL = URL(string: photoURLString) {
-                    cell.profilePhotoView.sd_setImage(with: photoURL)
+                    cellProperties.profilePhoto = photoURL
                 }
             }
             
-            // Setting photo inside post
-
-            if let _ = message.photoURL, let thumbURLString = message.thumbnailURL{
-                if let thumbURL = URL(string: thumbURLString) {
-                    cell.messagePhotoView.isHidden = false
-                    cell.messagePhotoView.sd_setImage(with: thumbURL)
+            // Check if there is a photo in the post
+            if let photoURL = message.photoURL, let thumbURLString = message.thumbnailURL{
+                if let thumbURL = URL(string: thumbURLString), let photoURL = URL(string: thumbURLString) {
+                    cellProperties.thumbURL = thumbURL
+                    cellProperties.photoURL = photoURL
+                    cellProperties.hasPhoto = true
                 }
-            } else {
-                cell.messagePhotoView.isHidden = true
-                cell.messagePhotoView.image = nil
             }
             
             // Show number of likes
             var userLiked = false
             
             if let likes = message.likes {
-                cell.messageLikesLabel.text = likes.count == 0 ? "" : String(likes.count)
-                
-                // Check if user has liked the message
+                cellProperties.likes = likes.count == 0 ? "" : String(likes.count)
                 if likes.contains(self.userID) {
-                    cell.likeButton.setTitle("Unlike", for: UIControlState.normal)
+                    cellProperties.likeButton = "Unlike"
                     userLiked = true
                 } else {
-                    cell.likeButton.setTitle("Like   ", for: UIControlState.normal)
+                    cellProperties.likeButton = "Like   "
                     userLiked = false
                 }
-                
             } else {
-                cell.likeButton.setTitle("Like   ", for: UIControlState.normal)
-                cell.messageLikesLabel.text = ""
+                cellProperties.likeButton = "Like   "
+                cellProperties.likes = ""
             }
             
-            // Function for like button press
-            cell.likeTask = {
+            // Set a function for like button press
+            cellProperties.likeTask = {
                 if userLiked {
-                    message.likes = self.databaseManager.removeLike(message: message, from: self.userID)
+                    self.messageArray[index].likes = self.databaseManager.removeLike(message: message, from: self.userID)
                 } else {
-                    message.likes = self.databaseManager.addLike(message: message, from: self.userID)
+                    self.messageArray[index].likes = self.databaseManager.addLike(message: message, from: self.userID)
                 }
-                self.chatTableView.reloadData()
             }
             
-            // Function that deals with photo zoom
-
-            cell.photoTask = {
-                LightboxViewer.showImage(viewController: self, url: message.photoURL, backload: cell.messagePhotoView.image)
-            }
+            // Set a function that deals with photo zoom, we know photo is there for sure otherwise user couldnt tap on it ;)
             
+            cellProperties.photoTask = {
+                self.lightBoxViewer.showImage(viewController: self, url: message.photoURL)
+            }
             
             // TODO: Show number of comments
             if let comments = message.comments {
-                cell.messageCommentLabel.text = String(comments.count)
+                cellProperties.commentCount = String(comments.count)
             } else {
-                cell.messageCommentLabel.text = ""
+                cellProperties.commentCount = ""
             }
             
             // Function for comment button press
-            cell.commentTask = {
+            cellProperties.commentTask = {
                 print("It works, unbelievable \(sender.email)")
             }
-        
         }
-        
-        // Add some color
-        if message.sender == userID {
-            cell.messageBoxView.backgroundColor = UIColor.flatSkyBlue()
-        } else {
-            cell.messageBoxView.backgroundColor = UIColor.flatGray()
-        }
-        return cell
+        return cellProperties
     }
+    
     
     
     @IBAction func uploadPhotoPressed(_ sender: Any) {
         imageUploader.pickImage(viewController: self, folder: "postPhotos", tn_width: 229, width: 1080)
         textFieldDidEndEditing(chatTextField)
+        uploadedImageView.isHidden = true
     }
     
     
@@ -230,21 +331,22 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBAction func tableViewTapped(_ sender: Any) {
         textFieldDidEndEditing(chatTextField)
     }
-
+    
     
     @IBAction func sendPressed(_ sender: Any) {
         if chatTextField.text != "" {
             textFieldDidEndEditing(chatTextField)
+            uploadedImageView.isHidden = true
             chatTextField.isEnabled = false
             sendButton.isEnabled = false
-            self.chatTextField.text = ""
-            
             if let text = chatTextField.text {
+                self.chatTextField.text = ""
                 databaseManager.saveMessageToDatabase(userID: userID, text: text, postImageURL: postImageURL, postThumbURL: postThumbURL)
             }
         }
         self.chatTextField.isEnabled = true
         self.sendButton.isEnabled = true
+        scrollTableToEnd()
     }
     
     
@@ -252,6 +354,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         UIView.animate(withDuration: 1, animations: {
             NotificationCenter.default.addObserver(self, selector: #selector(ChatViewController.getKeyboardHeight), name: Notification.Name.UIKeyboardWillShow, object: nil)
+            self.scrollTableToEnd()
         })
     }
     
@@ -274,8 +377,10 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     public func scrollTableToEnd() {
-        chatTableView.scrollToRow(at: NSIndexPath(row: messageArray.count-1, section: 0) as IndexPath, at: .top, animated: false)
-        chatTableView.scrollIndicatorInsets = chatTableView.contentInset
+        if messageArray.count > 10 {
+            chatTableView.scrollToRow(at: NSIndexPath(row: messageArray.count-1, section: 0) as IndexPath, at: .top, animated: false)
+            chatTableView.scrollIndicatorInsets = chatTableView.contentInset
+        }
     }
     
 }

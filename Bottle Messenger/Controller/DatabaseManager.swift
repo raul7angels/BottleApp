@@ -8,10 +8,14 @@
 
 import UIKit
 import FirebaseDatabase
+import SDWebImage
 
 protocol DatabaseManagerDelegate {
     func initialDataRecieved (users: [User]?, messages: [Message]?)
-    func messageUpdatesRecieved (messages: [Message]?)
+    func addedDataRecieved (user: User?, message:  Message? )
+    func updatedDataRecieved (user: User?, message: Message?)
+    func removedDataRecieved (message: Message?)
+
 }
 
 class DatabaseManager {
@@ -21,83 +25,127 @@ class DatabaseManager {
     var messageArray : [Message] = []
     var userArray : [User] = []
     var delegate: DatabaseManagerDelegate?
+    var imageManager = SDWebImagePrefetcher()
     
-    public func setUpFirebaseConnections() {
-        
-        // Get all users
-        usersDB.observe(.childAdded) { (snapshot) in
-            if let value = snapshot.value as? NSDictionary {
-                if let email = value["email"] as? String {
-                    let user = User(id: snapshot.key, email: email)
-                    if let photoURL = value["photoURL"] as? String {
-                        user.photoURL = photoURL
+    func mapUserData(snapshot: DataSnapshot) -> User {
+        var user = User(id: "", email: "")
+        if let value = snapshot.value as? [String : AnyObject] {
+            if let email = value["email"] as? String {
+                let newUser = User(id: snapshot.key, email: email)
+                if let photoURL = value["photoURL"] as? String {
+                    newUser.photoURL = photoURL
+                    if let  url = URL(string: photoURL) {
+                        print("Pre-Loading image for user:", newUser.email)
+                        self.imageManager.prefetchURLs([url], progress: nil, completed: { (completed, skipped) in
+                            print("Pre-Loading image for user:", newUser.email)
+                            print ("Completed \(completed), Skipped \(skipped)")
+                        })
                     }
-                    if let nickname = value["nickname"] as? String {
-                        user.nickname = nickname
-                    }
-                    self.userArray.append(user)
-                    self.delegate?.initialDataRecieved(users: self.userArray, messages: nil)
-
                 }
+                if let nickname = value["nickname"] as? String {
+                    newUser.nickname = nickname
+                }
+                user = newUser
+            }
+        }
+        // print("User:", user.email)
+        
+        return user
+    }
+    
+    func mapMessageData(snapshot: DataSnapshot) -> Message {
+        var message = Message(id: "", timestamp: "", sender: "", text: "")
+        if let value = snapshot.value as? [String : AnyObject] {
+            if let sender = value["Sender"] as? String,
+                let text = value["Text"] as? String,
+                let timestamp = value["Date"] as? String{
+                let messageID = snapshot.key
+                let newMessage = Message(id: messageID, timestamp: timestamp, sender: sender, text: text)
+                if let reciever = value["Reciever"] as? [String], reciever.count > 0 {
+                    newMessage.reciever = reciever
+                }
+                if let photoURL = value["PhotoURL"] as? String, let thumbURL = value["ThumbURL"] as? String, photoURL.count > 0 {
+                    newMessage.photoURL = photoURL
+                    newMessage.thumbnailURL = thumbURL
+                    if let url = URL(string: photoURL), let tn_url = URL(string: thumbURL) {
+                        self.imageManager.prefetchURLs([url, tn_url], progress: nil, completed: { (completed, skipped) in
+                            print("Pre-Loading image for message:", newMessage.text)
+                            print ("Completed \(completed), Skipped \(skipped)")
+                        })
+                    }
+                }
+                if let likes = value["Likes"] as? [String], likes.count > 0{
+                    newMessage.likes = likes
+                }
+                if let comments = value["Comments"] as? [String], comments.count > 0{
+                    for comment in self.getComments(commentID: comments) {
+                        newMessage.comments?.append(comment)
+                    }
+                }
+                message = newMessage
+            }
+        }
+        // print("Message:", message.text)
+        return message
+    }
+    
+    func getInitialData() {
+        // Get all existing users and messages
+        
+        usersDB.observeSingleEvent(of: .value) { (snapshot) in
+            for user in snapshot.children {
+                self.userArray.append(self.mapUserData(snapshot: user as! DataSnapshot))
+            }
+        }
+        
+        messageDB.observeSingleEvent(of: .value) { (snapshot) in
+            for message in snapshot.children {
+                self.messageArray.append(self.mapMessageData(snapshot: message as! DataSnapshot))
+            }
+            self.delegate?.initialDataRecieved(users: self.userArray, messages: self.messageArray)
+        }
+    }
+    
+    func monitorForUpdates() {
+        
+        // Get new users and messages that are not already in the array
+        usersDB.observe(.childAdded) { (snapshot) in
+            let user = self.mapUserData(snapshot: snapshot)
+            guard let _ = self.userArray.filter({ $0.id == user.id }).first else {
+                self.userArray.append(user)
+                self.delegate?.addedDataRecieved(user: user, message: nil)
+                return
             }
         }
         
         messageDB.observe(.childAdded) { (snapshot) in
-            if let valuesDictionary = snapshot.value as? Dictionary<String,Any>{
-                if let sender = valuesDictionary["Sender"] as? String,
-                    let text = valuesDictionary["Text"] as? String,
-                    let timestamp = valuesDictionary["Date"] as? String{
-                    let messageID = snapshot.key
-                    let newMessage = Message(id: messageID, timestamp: timestamp, sender: sender, text: text)
-                    if let reciever = valuesDictionary["Reciever"] as? [String]{
-                        if reciever.count > 0 {
-                            newMessage.reciever = reciever
-                        }
-                    }
-                    if let photoURL = valuesDictionary["PhotoURL"] as? String, let thumbURL = valuesDictionary["ThumbURL"] as? String{
-                        if photoURL.count > 0 {
-                            newMessage.photoURL = photoURL
-                            newMessage.thumbnailURL = thumbURL
-                        }
-                    }
-                    if let likes = valuesDictionary["Likes"] as? [String]{
-                        if likes.count > 0 {
-                            newMessage.likes = likes
-                        }
-                    }
-                    if let comments = valuesDictionary["Comments"] as? [String]{
-                        if comments.count > 0 {
-                            let commentsList = self.getComments(commentID: comments)
-                            for comment in commentsList {
-                                newMessage.comments?.append(comment)
-                            }
-                        }
-                    }
-                    self.messageArray.append(newMessage)
-                    self.delegate?.initialDataRecieved(users: self.userArray, messages: self.messageArray)
-                }
-                
+            let message = self.mapMessageData(snapshot: snapshot)
+            guard let _ = self.messageArray.filter({ $0.id == message.id }).first else {
+                self.messageArray.append(message)
+                self.delegate?.addedDataRecieved(user: nil, message: message)
+                return
+            }
+        }
+        
+        messageDB.observe(.childRemoved) { (snapshot) in
+            print ("Something was removed", snapshot.key)
+            let message = self.mapMessageData(snapshot: snapshot)
+            self.delegate?.removedDataRecieved(message: message)
+        }
+
+        
+        // Get chages done to existing records
+        usersDB.observe(.childChanged) { (snapshot) in
+            let user = self.mapUserData(snapshot: snapshot)
+            if let updatedUser = self.userArray.filter({ $0.id == user.id }).first {
+                self.delegate?.updatedDataRecieved(user: updatedUser, message: nil)
             }
         }
         
         messageDB.observe(.childChanged) { (snapshot) in
-            if let valuesDictionary = snapshot.value as? Dictionary<String,Any>{
-                let messageID = snapshot.key
-                if let updatedMessage = self.messageArray.filter({ $0.id == messageID }).first {
-                    
-                    if let likes = valuesDictionary["Likes"] as? [String]{
-                        if likes.count > 0 {
-                            updatedMessage.likes = likes
-                        }
-                    }
-                    if let comments = valuesDictionary["Comments"] as? [String]{
-                        if comments.count > 0 {
-                            let commentsList = self.getComments(commentID: comments)
-                            updatedMessage.comments = commentsList
-                        }
-                    }
-                    self.delegate?.messageUpdatesRecieved(messages: self.messageArray)
-                }
+            let message = self.mapMessageData(snapshot: snapshot)
+            if let updatedMessage = self.messageArray.filter({ $0.id == message.id }).first {
+                self.delegate?.updatedDataRecieved(user: nil, message: updatedMessage)
             }
         }
         
@@ -148,7 +196,7 @@ class DatabaseManager {
     }
     
     func saveMessageToDatabase(userID: String,  text: String, postImageURL: String?, postThumbURL: String?) {
-
+        
         var messageDict: [String:Any] = ["Sender": userID, "Reciever": [], "Text" : text,  "PhotoURL": "", "ThumbURL": "", "Date" : String(describing: Date()), "Likes": [], "Comments": []]
         
         if let imageURL = postImageURL, let thumbURL = postThumbURL {
@@ -165,6 +213,15 @@ class DatabaseManager {
             }
         }
     }
+    
+    func removeMessage (message: Message) {
+        
+        messageDB.child(message.id).removeValue()
+        if let index = messageArray.index(of: message) {
+            messageArray.remove(at: index )
+        }
+
+        }
     
     
 }
