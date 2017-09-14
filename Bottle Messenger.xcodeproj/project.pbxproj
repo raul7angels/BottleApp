@@ -28,6 +28,8 @@
 		7396646E1F6883C3001AFB54 /* RightChatViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7396646C1F6883C3001AFB54 /* RightChatViewCell.swift */; };
 		7396646F1F6883C3001AFB54 /* RightChatViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7396646D1F6883C3001AFB54 /* RightChatViewCell.xib */; };
 		739664711F68AA53001AFB54 /* BaseChatViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739664701F68AA53001AFB54 /* BaseChatViewCell.swift */; };
+		739B15C61F6AE78300C797F6 /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739B15C41F6AE78300C797F6 /* CommentTableViewCell.swift */; };
+		739B15C71F6AE78300C797F6 /* CommentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 739B15C51F6AE78300C797F6 /* CommentTableViewCell.xib */; };
 		73D3C7891F646C7E00B9801B /* ImageUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D3C7881F646C7E00B9801B /* ImageUploader.swift */; };
 		73D3C78B1F64A73F00B9801B /* LightboxViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D3C78A1F64A73F00B9801B /* LightboxViewer.swift */; };
 /* End PBXBuildFile section */
@@ -54,6 +56,8 @@
 		7396646C1F6883C3001AFB54 /* RightChatViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightChatViewCell.swift; sourceTree = "<group>"; };
 		7396646D1F6883C3001AFB54 /* RightChatViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RightChatViewCell.xib; sourceTree = "<group>"; };
 		739664701F68AA53001AFB54 /* BaseChatViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseChatViewCell.swift; sourceTree = "<group>"; };
+		739B15C41F6AE78300C797F6 /* CommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
+		739B15C51F6AE78300C797F6 /* CommentTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentTableViewCell.xib; sourceTree = "<group>"; };
 		73D3C7881F646C7E00B9801B /* ImageUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUploader.swift; sourceTree = "<group>"; };
 		73D3C78A1F64A73F00B9801B /* LightboxViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightboxViewer.swift; sourceTree = "<group>"; };
 		73DFE7481F622273003588D0 /* Bottle Messenger.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Bottle Messenger.entitlements"; sourceTree = "<group>"; };
@@ -141,6 +145,7 @@
 				731A8D371F5F171B00930C93 /* LoginViewController.swift */,
 				731A8D351F5F171B00930C93 /* AppDelegate.swift */,
 				73135ED41F5F388F00E16B5E /* ChatViewController.swift */,
+				739B15C41F6AE78300C797F6 /* CommentTableViewCell.swift */,
 				731A8D491F5F370800930C93 /* RegistrationViewController.swift */,
 				73135EDA1F5F40F800E16B5E /* LeftChatViewCell.swift */,
 				7396646C1F6883C3001AFB54 /* RightChatViewCell.swift */,
@@ -156,6 +161,7 @@
 			isa = PBXGroup;
 			children = (
 				731A8D391F5F171B00930C93 /* Main.storyboard */,
+				739B15C51F6AE78300C797F6 /* CommentTableViewCell.xib */,
 				7396646D1F6883C3001AFB54 /* RightChatViewCell.xib */,
 				73135EDB1F5F40F800E16B5E /* LeftChatViewCell.xib */,
 				731A8D3E1F5F171B00930C93 /* LaunchScreen.storyboard */,
@@ -246,6 +252,7 @@
 				731A8D3D1F5F171B00930C93 /* Assets.xcassets in Resources */,
 				731A8D3B1F5F171B00930C93 /* Main.storyboard in Resources */,
 				7396646F1F6883C3001AFB54 /* RightChatViewCell.xib in Resources */,
+				739B15C71F6AE78300C797F6 /* CommentTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -311,6 +318,7 @@
 				73135EE81F60471600E16B5E /* Comment.swift in Sources */,
 				739664711F68AA53001AFB54 /* BaseChatViewCell.swift in Sources */,
 				7396646E1F6883C3001AFB54 /* RightChatViewCell.swift in Sources */,
+				739B15C61F6AE78300C797F6 /* CommentTableViewCell.swift in Sources */,
 				73135EE61F5F5E7A00E16B5E /* Utils.swift in Sources */,
 				73135EEA1F60807900E16B5E /* User.swift in Sources */,
 				73135EE01F5F44BB00E16B5E /* Message.swift in Sources */,

@@ -10,12 +10,14 @@ import Foundation
 
 class Comment {
     var id: String = ""
-    var sender: String = ""
+    var sender: User
     var text: String = ""
     var likes : [String] = []
+    var date: String = ""
     weak var message: Message?
     
-    init(text: String){
+    init(text: String, sender: User){
         self.text = text
+        self.sender = sender
     }
 }

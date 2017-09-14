@@ -159,7 +159,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         let selectedMessage = messageArray[indexPath.row]
-        if selectedMessage.sender == userID {
+        if selectedMessage.sender.id == userID {
             if editingStyle == .delete {
                 print("Delete")
                 databaseManager.removeMessage(message: selectedMessage)
@@ -175,7 +175,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         // Pick cell style based on who the sender is
         var isUsersPost = false
-        if message.sender == userID {
+        if message.sender.id == userID {
             isUsersPost = true
         }
         
@@ -220,7 +220,21 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                 cell.messagePhotoView.isHidden = true
                 cell.messagePhotoView.image = nil
             }
-            cell.commentTask = cellProperties.commentTask
+            cell.commentTask = {
+                cell.comments = [Comment(text: "This is my first comment", sender: message.sender), Comment(text: "This is my second comment", sender: message.sender)]
+                UIView.animate(withDuration: 1, animations: {
+                if cell.commentTableViewHeight.constant < 200 {
+                    cell.commentTableViewHeight.constant = 200
+                    cell.commentTableView.isHidden = false
+                } else {
+                    cell.commentTableViewHeight.constant = 10
+                    cell.commentTableView.isHidden = true
+                }
+                    self.reloadUI()
+                })
+                print("It works, unbelievable \(message.sender.email)")
+            }
+
             cell.likeTask = cellProperties.likeTask
             cell.photoTask = {
                 self.lightBoxViewer.showImage(viewController: self, url: message.photoURL, backload: cell.messagePhotoView.image)
@@ -240,11 +254,10 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         cellProperties.date = dateformatter.string(from: message.timestamp.toDate(dateFormat: "yyyy-MM-dd HH:mm:ss ZZZ"))
         
         // Get user based on id and add e-mail & profile photo
-        if let sender = userArray.filter({ $0.id == message.sender }).first {
-            cellProperties.senderEmail = sender.email
+            cellProperties.senderEmail = message.sender.email
             
             // Setting user profile photo
-            if let photoURLString = sender.photoURL {
+            if let photoURLString = message.sender.photoURL {
                 if let photoURL = URL(string: photoURLString) {
                     cellProperties.profilePhoto = photoURL
                 }
@@ -257,7 +270,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                     cellProperties.photoURL = photoURL
                     cellProperties.hasPhoto = true
                 }
-            }
             
             // Show number of likes
             var userLiked = false
@@ -296,9 +308,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             }
             
             // Function for comment button press
-            cellProperties.commentTask = {
-                print("It works, unbelievable \(sender.email)")
-            }
         }
         return cellProperties
     }

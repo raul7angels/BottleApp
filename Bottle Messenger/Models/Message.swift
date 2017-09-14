@@ -14,7 +14,7 @@ class Message: Equatable {
     }
     
     var id : String = ""
-    var sender: String = ""
+    var sender: User
     var reciever: [String]? = nil
     var timestamp: String = ""
     var text: String = ""
@@ -23,7 +23,7 @@ class Message: Equatable {
     var likes: [String]? = []
     var comments: [Comment]? = nil
     
-    init(id: String, timestamp: String, sender: String, text: String, reciever: [String]? = nil, photoURL: String? = nil, thumbnailURL: String? = nil, likes: [String]? = nil, comments: [Comment]? = nil) {
+    init(id: String, timestamp: String, sender: User, text: String, reciever: [String]? = nil, photoURL: String? = nil, thumbnailURL: String? = nil, likes: [String]? = nil, comments: [Comment]? = nil) {
         self.id = id
         self.sender = sender
         self.reciever = reciever

@@ -7,9 +7,14 @@
 //
 
 import UIKit
+import SDWebImage
 
-class LeftChatViewCell: UITableViewCell {
-    
+class LeftChatViewCell: UITableViewCell, UITableViewDelegate, UITableViewDataSource {
+  
+    var comments: [Comment]?
+    let commentCellIdentifier = "commentCell"
+    let commentCellNibName = "CommentTableViewCell"
+
     var likeTask : (() -> Void)? = nil
     var commentTask : (() -> Void)? = nil
     var photoTask : (() -> Void)? = nil
@@ -20,7 +25,8 @@ class LeftChatViewCell: UITableViewCell {
     @IBOutlet weak var profilePhotoView: UIImageView!
     @IBOutlet weak var messageDateLabel: UILabel!
     @IBOutlet weak var messageCommentLabel: UILabel!
-    
+    @IBOutlet weak var commentTableViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var commentTableView: UITableView!
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var messageLikesLabel: UILabel!
     @IBOutlet weak var messagePhotoView: UIImageView!
@@ -31,12 +37,43 @@ class LeftChatViewCell: UITableViewCell {
         self.selectionStyle = UITableViewCellSelectionStyle.none
         // Add photo Tap gesture recognizer
         messagePhotoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(photoTapped)))
+        commentTableView.register(UINib(nibName: commentCellNibName, bundle: nil), forCellReuseIdentifier: commentCellIdentifier)
+        configureTableView()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        if let comments = comments {
+            return comments.count
+        }
+        return 0
+    }
+    
+    func configureTableView() {
+        commentTableView.rowHeight = UITableViewAutomaticDimension
+        commentTableView.estimatedRowHeight = 120
+        commentTableView.layoutIfNeeded()
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell  = commentTableView.dequeueReusableCell(withIdentifier: commentCellIdentifier) as! CommentTableViewCell
+        if let comments = comments {
+            let comment = comments[indexPath.row]
+            cell.commentTextLabel.text = comment.text
+            cell.senderLabel.text = comment.sender.email
+            cell.dateLabel.text = comment.date
+            if let profilePhotoURL = comment.sender.photoURL {
+                cell.profilePhotoView.sd_setImage(with: URL(string:profilePhotoURL), completed: nil)
+            }
+        }
+        
+        return cell
     }
     
     @objc func photoTapped() {

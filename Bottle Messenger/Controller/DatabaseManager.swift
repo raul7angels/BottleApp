@@ -54,38 +54,39 @@ class DatabaseManager {
     }
     
     func mapMessageData(snapshot: DataSnapshot) -> Message {
-        var message = Message(id: "", timestamp: "", sender: "", text: "")
+        var message = Message(id: "", timestamp: "", sender: User(id: "", email: ""), text: "")
         if let value = snapshot.value as? [String : AnyObject] {
-            if let sender = value["Sender"] as? String,
+            if let senderID = value["Sender"] as? String,
                 let text = value["Text"] as? String,
                 let timestamp = value["Date"] as? String{
                 let messageID = snapshot.key
-                let newMessage = Message(id: messageID, timestamp: timestamp, sender: sender, text: text)
-                if let reciever = value["Reciever"] as? [String], reciever.count > 0 {
-                    newMessage.reciever = reciever
-                }
-                if let photoURL = value["PhotoURL"] as? String, let thumbURL = value["ThumbURL"] as? String, photoURL.count > 0 {
-                    newMessage.photoURL = photoURL
-                    newMessage.thumbnailURL = thumbURL
-                    if let url = URL(string: photoURL), let tn_url = URL(string: thumbURL) {
-                        self.imageManager.prefetchURLs([url, tn_url], progress: nil, completed: { (completed, skipped) in
-                            print("Pre-Loading image for message:", newMessage.text)
-                            print ("Completed \(completed), Skipped \(skipped)")
-                        })
+                if let sender = self.userArray.filter({ $0.id == senderID }).first {
+                    let newMessage = Message(id: messageID, timestamp: timestamp, sender: sender, text: text)
+                    if let reciever = value["Reciever"] as? [String], reciever.count > 0 {
+                        newMessage.reciever = reciever
                     }
-                }
-                if let likes = value["Likes"] as? [String], likes.count > 0{
-                    newMessage.likes = likes
-                }
-                if let comments = value["Comments"] as? [String], comments.count > 0{
-                    for comment in self.getComments(commentID: comments) {
-                        newMessage.comments?.append(comment)
+                    if let photoURL = value["PhotoURL"] as? String, let thumbURL = value["ThumbURL"] as? String, photoURL.count > 0 {
+                        newMessage.photoURL = photoURL
+                        newMessage.thumbnailURL = thumbURL
+                        if let url = URL(string: photoURL), let tn_url = URL(string: thumbURL) {
+                            self.imageManager.prefetchURLs([url, tn_url], progress: nil, completed: { (completed, skipped) in
+                                print("Pre-Loading image for message:", newMessage.text)
+                                print ("Completed \(completed), Skipped \(skipped)")
+                            })
+                        }
                     }
+                    if let likes = value["Likes"] as? [String], likes.count > 0{
+                        newMessage.likes = likes
+                    }
+                    if let comments = value["Comments"] as? [String], comments.count > 0{
+                        for comment in self.getComments(commentID: comments) {
+                            newMessage.comments?.append(comment)
+                        }
+                    }
+                    message = newMessage
                 }
-                message = newMessage
             }
         }
-        // print("Message:", message.text)
         return message
     }
     
@@ -157,7 +158,7 @@ class DatabaseManager {
     func getComments(commentID List : [String]) -> [Comment]{
         
         
-        return [Comment(text: ""),Comment(text: "")]
+        return []
     }
     
     func addLike(message: Message, from: String) -> [String] {

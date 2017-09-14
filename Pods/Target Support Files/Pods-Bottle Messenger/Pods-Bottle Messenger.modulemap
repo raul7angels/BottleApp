@@ -1,0 +1,6 @@
+framework module Pods_Bottle_Messenger {
+  umbrella header "Pods-Bottle Messenger-umbrella.h"
+
+  export *
+  module * { export * }
+}
