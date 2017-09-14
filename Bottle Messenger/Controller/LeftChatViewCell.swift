@@ -37,8 +37,13 @@ class LeftChatViewCell: UITableViewCell, UITableViewDelegate, UITableViewDataSou
         self.selectionStyle = UITableViewCellSelectionStyle.none
         // Add photo Tap gesture recognizer
         messagePhotoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(photoTapped)))
+        commentTableView.delegate = self
+        commentTableView.dataSource = self
+        commentTableView.isScrollEnabled = true
+        commentTableView.isHidden = true
         commentTableView.register(UINib(nibName: commentCellNibName, bundle: nil), forCellReuseIdentifier: commentCellIdentifier)
         configureTableView()
+        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -50,6 +55,7 @@ class LeftChatViewCell: UITableViewCell, UITableViewDelegate, UITableViewDataSou
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if let comments = comments {
+        print ("Have \(comments.count) comments")
             return comments.count
         }
         return 0
@@ -98,6 +104,8 @@ class LeftChatViewCell: UITableViewCell, UITableViewDelegate, UITableViewDataSou
         {
             btnAction()
         }
+        commentTableView.reloadData()
+        configureTableView()
     }
     
 }

@@ -15,6 +15,11 @@ import SVProgressHUD
 
 class ChatViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, ImageUploaderDelegate, DatabaseManagerDelegate, LightboxViewerDelegate {
     
+    // Constants
+    let userChatCellIdentifier = "rightChatCell"
+    let otherChatCellIdentifier = "leftChatCell"
+    let chatCellClass = "LeftChatViewCell"
+    
     @IBOutlet weak var textfieldHeight: NSLayoutConstraint!
     @IBOutlet weak var chatTextField: UITextField!
     @IBOutlet weak var chatTableView: UITableView!
@@ -31,8 +36,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     let databaseManager = DatabaseManager()
     var lightBoxViewer = LightboxViewer()
     var imageUploader: ImageUploader = ImageUploader()
-    
-    
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,8 +55,8 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             Utils.displayAlert(targetVC: self, title: "Error", message: "Please log in to use the bottle chat.", button: "Log in", segue: "goToLogin")
         }
         
-        chatTableView.register(UINib(nibName: "LeftChatViewCell", bundle: nil), forCellReuseIdentifier: "leftChatCell")
-        chatTableView.register(UINib(nibName: "RightChatViewCell", bundle: nil), forCellReuseIdentifier: "rightChatCell")
+        chatTableView.register(UINib(nibName: chatCellClass, bundle: nil), forCellReuseIdentifier: userChatCellIdentifier)
+        chatTableView.register(UINib(nibName: chatCellClass, bundle: nil), forCellReuseIdentifier: otherChatCellIdentifier)
         
         SVProgressHUD.show()
         databaseManager.getInitialData()
@@ -175,36 +179,13 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         // Pick cell style based on who the sender is
         var isUsersPost = false
+        var cellIdentifier = otherChatCellIdentifier
         if message.sender.id == userID {
             isUsersPost = true
+            cellIdentifier = userChatCellIdentifier
         }
         
-        switch isUsersPost {
-        case true:
-            let cell = chatTableView.dequeueReusableCell(withIdentifier: "rightChatCell") as! RightChatViewCell
-            cell.messageBoxView.backgroundColor = UIColor.flatSkyBlue()
-            cell.nicknameLabel.text = cellProperties.senderEmail
-            cell.messageDateLabel.text = cellProperties.date
-            cell.messageTextLabel.text = cellProperties.text
-            if let profilePhoto = cellProperties.profilePhoto {cell.profilePhotoView.sd_setImage(with: profilePhoto)}
-            cell.messageLikesLabel.text = cellProperties.likes
-            cell.likeButton.setTitle(cellProperties.likeButton, for: .normal)
-            cell.messageCommentLabel.text = cellProperties.commentCount
-            if cellProperties.hasPhoto {
-                cell.messagePhotoView.isHidden = false
-                cell.messagePhotoView.sd_setImage(with: cellProperties.thumbURL)
-            } else {
-                cell.messagePhotoView.isHidden = true
-                cell.messagePhotoView.image = nil
-            }
-            cell.commentTask = cellProperties.commentTask
-            cell.likeTask = cellProperties.likeTask
-            cell.photoTask = {
-                self.lightBoxViewer.showImage(viewController: self, url: message.photoURL, backload: cell.messagePhotoView.image)
-            }
-            return cell
-        default:
-            let cell = chatTableView.dequeueReusableCell(withIdentifier: "leftChatCell") as! LeftChatViewCell
+            let cell = chatTableView.dequeueReusableCell(withIdentifier: cellIdentifier) as! LeftChatViewCell
             cell.messageBoxView.backgroundColor = UIColor.flatGrayColorDark()
             cell.nicknameLabel.text = cellProperties.senderEmail
             cell.messageDateLabel.text = cellProperties.date
@@ -220,8 +201,10 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                 cell.messagePhotoView.isHidden = true
                 cell.messagePhotoView.image = nil
             }
+            cell.commentTableView.isHidden = true
             cell.commentTask = {
-                cell.comments = [Comment(text: "This is my first comment", sender: message.sender), Comment(text: "This is my second comment", sender: message.sender)]
+                cell.comments = message.comments
+                print("This message has \(cell.comments?.count ?? 0) comments.")
                 UIView.animate(withDuration: 1, animations: {
                 if cell.commentTableViewHeight.constant < 200 {
                     cell.commentTableViewHeight.constant = 200
@@ -232,7 +215,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                 }
                     self.reloadUI()
                 })
-                print("It works, unbelievable \(message.sender.email)")
             }
 
             cell.likeTask = cellProperties.likeTask
@@ -240,7 +222,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                 self.lightBoxViewer.showImage(viewController: self, url: message.photoURL, backload: cell.messagePhotoView.image)
             }
             return cell
-        }
     }
     
     func prepareCell(message: Message, index: Int) -> CellProperties {

@@ -78,6 +78,7 @@ class DatabaseManager {
                     if let likes = value["Likes"] as? [String], likes.count > 0{
                         newMessage.likes = likes
                     }
+                     newMessage.comments? = [Comment(text: "This is my first comment", sender: newMessage.sender), Comment(text: "This is my second comment", sender: newMessage.sender)]
                     if let comments = value["Comments"] as? [String], comments.count > 0{
                         for comment in self.getComments(commentID: comments) {
                             newMessage.comments?.append(comment)
