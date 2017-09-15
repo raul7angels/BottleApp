@@ -233,8 +233,8 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                 }
                 cell.commentTableView.reloadData()
                 //cell.configureTableView()
-                self.reloadRow(row: indexPath.row)
-                //self.reloadUI()
+                //self.reloadRow(row: indexPath.row)
+                self.reloadUI()
            // })
             
 
