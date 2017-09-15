@@ -12,7 +12,7 @@
 		<key>BFRImageViewer.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>1</integer>
 		</dict>
 		<key>ChameleonFramework.xcscheme</key>
 		<dict>
@@ -118,6 +118,79 @@
 		<dict>
 			<key>orderHint</key>
 			<integer>8</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>0DBE1A19B984F7A1C6C2EDFEF8759DF0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>107A9565F9DF88517DFD3E28C05B2B96</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>266AE1506DAD13D34C0725E909C0C476</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>3A49E1B707AFF5D333E75AE7AE837CF7</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5F81F7D60FEF06416317BA01AFC80A2B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>7062C249CF48160D1D842F4A6B6B6002</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>8A267660E1AD4832DE75665F2F87AEA3</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>8C4D82DD9F4733589D473E71D3B7D4ED</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>94E25CC50BC2B64CD252A47EF746A0D7</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C052BEBFBD0AB5218CC64BA3450F6547</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C8F88642213AD0244480533547ADE820</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>CD8FD1739F578055A5FB8183F3DD4DF3</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D794256BA65603033B3CE1B6729DD63B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E4DD95323C54A78F879DAB0F1508B8E7</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>

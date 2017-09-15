@@ -13,7 +13,7 @@ class CommentTableViewCell: UITableViewCell {
     @IBOutlet weak var profilePhotoView: UIImageView!
     @IBOutlet weak var senderLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
-    @IBOutlet weak var commentTextLabel: TopAlignedLabel!
+    @IBOutlet weak var commentTextLabel: UITextField!
     
     override func awakeFromNib() {
         super.awakeFromNib()

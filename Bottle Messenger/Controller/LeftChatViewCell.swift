@@ -11,13 +11,15 @@ import SDWebImage
 
 class LeftChatViewCell: UITableViewCell, UITableViewDelegate, UITableViewDataSource {
   
-    var comments: [Comment]?
+    // Constants
     let commentCellIdentifier = "commentCell"
     let commentCellNibName = "CommentTableViewCell"
 
+    var comments: [Comment]?
     var likeTask : (() -> Void)? = nil
     var commentTask : (() -> Void)? = nil
     var photoTask : (() -> Void)? = nil
+    var commentsOpen: Bool = false
     
     @IBOutlet weak var messageBoxView: UIView!
     @IBOutlet weak var messageTextLabel: UILabel!
@@ -40,17 +42,17 @@ class LeftChatViewCell: UITableViewCell, UITableViewDelegate, UITableViewDataSou
         commentTableView.delegate = self
         commentTableView.dataSource = self
         commentTableView.isScrollEnabled = true
-        commentTableView.isHidden = true
+        commentTableView.isHidden = commentsOpen ? false : true
         commentTableView.register(UINib(nibName: commentCellNibName, bundle: nil), forCellReuseIdentifier: commentCellIdentifier)
         configureTableView()
         
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
+//    override func setSelected(_ selected: Bool, animated: Bool) {
+//        super.setSelected(selected, animated: animated)
+//
+//        // Configure the view for the selected state
+//    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -63,7 +65,7 @@ class LeftChatViewCell: UITableViewCell, UITableViewDelegate, UITableViewDataSou
     
     func configureTableView() {
         commentTableView.rowHeight = UITableViewAutomaticDimension
-        commentTableView.estimatedRowHeight = 120
+        commentTableView.estimatedRowHeight = 200
         commentTableView.layoutIfNeeded()
     }
     
@@ -71,6 +73,7 @@ class LeftChatViewCell: UITableViewCell, UITableViewDelegate, UITableViewDataSou
         let cell  = commentTableView.dequeueReusableCell(withIdentifier: commentCellIdentifier) as! CommentTableViewCell
         if let comments = comments {
             let comment = comments[indexPath.row]
+            print("Made a comment \(comment.text)cell for message\(messageTextLabel.text)")
             cell.commentTextLabel.text = comment.text
             cell.senderLabel.text = comment.sender.email
             cell.dateLabel.text = comment.date
@@ -104,8 +107,6 @@ class LeftChatViewCell: UITableViewCell, UITableViewDelegate, UITableViewDataSou
         {
             btnAction()
         }
-        commentTableView.reloadData()
-        configureTableView()
     }
     
 }

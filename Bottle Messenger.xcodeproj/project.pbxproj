@@ -25,7 +25,6 @@
 		731A8D401F5F171B00930C93 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 731A8D3E1F5F171B00930C93 /* LaunchScreen.storyboard */; };
 		731A8D4A1F5F370800930C93 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731A8D491F5F370800930C93 /* RegistrationViewController.swift */; };
 		7396646B1F675980001AFB54 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7396646A1F675980001AFB54 /* DatabaseManager.swift */; };
-		7396646E1F6883C3001AFB54 /* RightChatViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7396646C1F6883C3001AFB54 /* RightChatViewCell.swift */; };
 		7396646F1F6883C3001AFB54 /* RightChatViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7396646D1F6883C3001AFB54 /* RightChatViewCell.xib */; };
 		739664711F68AA53001AFB54 /* BaseChatViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739664701F68AA53001AFB54 /* BaseChatViewCell.swift */; };
 		739B15C61F6AE78300C797F6 /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739B15C41F6AE78300C797F6 /* CommentTableViewCell.swift */; };
@@ -53,7 +52,6 @@
 		731A8D411F5F171B00930C93 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		731A8D491F5F370800930C93 /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
 		7396646A1F675980001AFB54 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
-		7396646C1F6883C3001AFB54 /* RightChatViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightChatViewCell.swift; sourceTree = "<group>"; };
 		7396646D1F6883C3001AFB54 /* RightChatViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RightChatViewCell.xib; sourceTree = "<group>"; };
 		739664701F68AA53001AFB54 /* BaseChatViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseChatViewCell.swift; sourceTree = "<group>"; };
 		739B15C41F6AE78300C797F6 /* CommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
@@ -148,7 +146,6 @@
 				739B15C41F6AE78300C797F6 /* CommentTableViewCell.swift */,
 				731A8D491F5F370800930C93 /* RegistrationViewController.swift */,
 				73135EDA1F5F40F800E16B5E /* LeftChatViewCell.swift */,
-				7396646C1F6883C3001AFB54 /* RightChatViewCell.swift */,
 				73D3C78A1F64A73F00B9801B /* LightboxViewer.swift */,
 				73D3C7881F646C7E00B9801B /* ImageUploader.swift */,
 				7396646A1F675980001AFB54 /* DatabaseManager.swift */,
@@ -317,7 +314,6 @@
 				731A8D381F5F171B00930C93 /* LoginViewController.swift in Sources */,
 				73135EE81F60471600E16B5E /* Comment.swift in Sources */,
 				739664711F68AA53001AFB54 /* BaseChatViewCell.swift in Sources */,
-				7396646E1F6883C3001AFB54 /* RightChatViewCell.swift in Sources */,
 				739B15C61F6AE78300C797F6 /* CommentTableViewCell.swift in Sources */,
 				73135EE61F5F5E7A00E16B5E /* Utils.swift in Sources */,
 				73135EEA1F60807900E16B5E /* User.swift in Sources */,

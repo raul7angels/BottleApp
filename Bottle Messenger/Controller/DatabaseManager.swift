@@ -15,7 +15,7 @@ protocol DatabaseManagerDelegate {
     func addedDataRecieved (user: User?, message:  Message? )
     func updatedDataRecieved (user: User?, message: Message?)
     func removedDataRecieved (message: Message?)
-
+    
 }
 
 class DatabaseManager {
@@ -62,9 +62,24 @@ class DatabaseManager {
                 let messageID = snapshot.key
                 if let sender = self.userArray.filter({ $0.id == senderID }).first {
                     let newMessage = Message(id: messageID, timestamp: timestamp, sender: sender, text: text)
+                    
+                    // Fake comments for testing UI
+                    newMessage.comments = [Comment(text: "This is my first comment", sender: newMessage.sender), Comment(text: "This is my second comment", sender: newMessage.sender)]
+                    
                     if let reciever = value["Reciever"] as? [String], reciever.count > 0 {
                         newMessage.reciever = reciever
                     }
+                    
+                    if let likes = value["Likes"] as? [String], likes.count > 0{
+                        newMessage.likes = likes
+                    }
+
+                    if let comments = value["Comments"] as? [String], comments.count > 0{
+                        for comment in self.getComments(commentID: comments) {
+                            newMessage.comments?.append(comment)
+                        }
+                    }
+                    
                     if let photoURL = value["PhotoURL"] as? String, let thumbURL = value["ThumbURL"] as? String, photoURL.count > 0 {
                         newMessage.photoURL = photoURL
                         newMessage.thumbnailURL = thumbURL
@@ -73,15 +88,6 @@ class DatabaseManager {
                                 print("Pre-Loading image for message:", newMessage.text)
                                 print ("Completed \(completed), Skipped \(skipped)")
                             })
-                        }
-                    }
-                    if let likes = value["Likes"] as? [String], likes.count > 0{
-                        newMessage.likes = likes
-                    }
-                     newMessage.comments? = [Comment(text: "This is my first comment", sender: newMessage.sender), Comment(text: "This is my second comment", sender: newMessage.sender)]
-                    if let comments = value["Comments"] as? [String], comments.count > 0{
-                        for comment in self.getComments(commentID: comments) {
-                            newMessage.comments?.append(comment)
                         }
                     }
                     message = newMessage
@@ -134,7 +140,7 @@ class DatabaseManager {
             let message = self.mapMessageData(snapshot: snapshot)
             self.delegate?.removedDataRecieved(message: message)
         }
-
+        
         
         // Get chages done to existing records
         usersDB.observe(.childChanged) { (snapshot) in
@@ -222,8 +228,8 @@ class DatabaseManager {
         if let index = messageArray.index(of: message) {
             messageArray.remove(at: index )
         }
-
-        }
+        
+    }
     
     
 }
