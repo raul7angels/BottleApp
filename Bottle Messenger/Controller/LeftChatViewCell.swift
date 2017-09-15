@@ -54,6 +54,10 @@ class LeftChatViewCell: UITableViewCell, UITableViewDelegate, UITableViewDataSou
 //        // Configure the view for the selected state
 //    }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if let comments = comments {

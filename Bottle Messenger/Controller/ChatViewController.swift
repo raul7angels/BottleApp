@@ -184,6 +184,10 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // Get the info about the message from an array
@@ -201,6 +205,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         let cell = chatTableView.dequeueReusableCell(withIdentifier: cellIdentifier) as! LeftChatViewCell
         cell.messageBoxView.backgroundColor = isUsersPost ? UIColor.flatSkyBlue() : UIColor.flatGray()
         
+        // Assign all cell properties
         cell.nicknameLabel.text = cellProperties.senderEmail
         cell.messageDateLabel.text = cellProperties.date
         cell.messageTextLabel.text = cellProperties.text
@@ -218,15 +223,16 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.commentTableView.isHidden = true
         cell.comments = message.comments
         
+        // Assign cell actions
+        
         cell.commentTask = {
-           // UIView.animate(withDuration: 1, animations: {
                 if cell.commentsOpen {
-                    cell.commentTableViewHeight.constant = 10
+                    //cell.commentTableViewHeight.constant = 10
                     //cell.commentTableViewHeight.priority = UILayoutPriority(rawValue: 250)
-                    cell.commentTableView.isHidden = false
+                    cell.commentTableView.isHidden = true
                     cell.commentsOpen = false
                 } else {
-                    cell.commentTableViewHeight.constant = 200
+                    //cell.commentTableViewHeight.constant = 200
                     //cell.commentTableViewHeight.priority = UILayoutPriority(rawValue: 999)
                     cell.commentTableView.isHidden = false
                     cell.commentsOpen = true
@@ -235,9 +241,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
                 //cell.configureTableView()
                 //self.reloadRow(row: indexPath.row)
                 self.reloadUI()
-           // })
-            
-
         }
         
         cell.likeTask = cellProperties.likeTask
@@ -260,7 +263,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
         // Get user based on id and add e-mail & profile photo
         cellProperties.senderEmail = message.sender.email
         
-        // TODO: Show number of comments
+        // Show number of comments
         if let comments = message.comments {
             cellProperties.commentCount = String(comments.count)
         } else {
@@ -309,10 +312,6 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             }
         }
         
-        // Set a function that deals with photo zoom, we know photo is there for sure otherwise user couldnt tap on it ;)
-        
-        
-        // Function for comment button press
     return cellProperties
 }
 
